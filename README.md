@@ -7,14 +7,13 @@ docker-compose up --abort-on-container-exit
 sudo nano ./configs/env.yaml
 ```
 
-  before:
-      #- nvr/addons/auth/none
-  after:
+  before:  
+      #- nvr/addons/auth/none  
+  after:  
       - nvr/addons/auth/none
 
 ```
 cp ./configs/samples/* ./configs
-
 
 ```
 
