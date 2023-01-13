@@ -1,3 +1,23 @@
+```
+git clone https://github.com/BonhyeonGu/OS-NVR
+cd ./os-nvr_docker
+cp ./compose-samples/default.yml ./docker-compose.yml
+cp ./configs/samples/* ./configs
+docker-compose up --abort-on-container-exit
+sudo nano ./configs/env.yaml
+```
+
+  before:
+      #- nvr/addons/auth/none
+  after:
+      - nvr/addons/auth/none
+
+```
+cp ./configs/samples/* ./configs
+
+
+```
+
 <img src="https://gitlab.com/osnvr/os-nvr-assets/-/raw/master/screenshots/readme.png">
 
 [Screenshots](https://gitlab.com/osnvr/os-nvr_assets/-/tree/master/screenshots)
