@@ -1,0 +1,72 @@
+FROM nvidia/cuda:11.6.0-cudnn8-devel-ubuntu20.04
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y nvidia-cuda-toolkit
+RUN apt-get install -y wget git cmake nano snapd build-essential git yasm unzip wget sysstat nasm libc6 \
+libavcodec-dev libavformat-dev libavutil-dev pkgconf g++ freeglut3-dev \
+libx11-dev libxmu-dev libxi-dev libglu1-mesa libglu1-mesa-dev libgstreamer-plugins-bad1.0-dev gstreamer1.0-plugins-good sed sudo systemd
+
+#!----------------------------------------------------------------------------------------------------------golang
+
+RUN wget https://go.dev/dl/go1.19.4.linux-amd64.tar.gz
+RUN tar -C /usr/local -xzf go1.19.4.linux-amd64.tar.gz
+
+ENV GOROOT=/usr/local/go
+RUN sh -c 'echo "export GOROOT=/usr/local/go" >> /etc/profile'
+ENV PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+RUN sh -c 'echo "export PATH=$GOPATH/bin:$GOROOT/bin:$PATH" >> /etc/profile'
+
+#!----------------------------------------------------------------------------------------------------------------------
+
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-ffmpeg
+#!----------------------------------------------------------------------------------------------------------nvcodec
+WORKDIR /root
+RUN git clone https://github.com/FFmpeg/nv-codec-headers
+WORKDIR /root/nv-codec-headers
+RUN make && make install
+#!----------------------------------------------------------------------------------------------------------h264
+WORKDIR /root
+RUN git clone https://code.videolan.org/videolan/x264.git
+WORKDIR /root/x264
+RUN ./configure --disable-cli --enable-static --enable-shared --enable-strip
+RUN make && make install
+RUN ldconfig
+#!----------------------------------------------------------------------------------------------------------h265
+RUN apt-get install -y libx265-dev libnuma-dev
+#!----------------------------------------------ffmpeg
+WORKDIR /root
+RUN git clone git://source.ffmpeg.org/ffmpeg.git ffmpeg
+WORKDIR /root/ffmpeg
+RUN ./configure --enable-nonfree --enable-nvenc --enable-libx264 --enable-libx265 --enable-gpl --enable-cuda --enable-cuvid --enable-cuda-nvcc
+RUN make
+#!----------------------------------------------
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-ffmpeg end
+
+#!----------------------------------------------------------------------------------------------------------osnvr
+
+RUN sudo useradd -m -s /sbin/nologin _nvr
+
+WORKDIR /home/_nvr/
+RUN sudo -u _nvr git clone --branch master https://github.com/BonhyeonGu/OS-NVR.git
+
+WORKDIR /home/_nvr/os-nvr
+USER _nvr
+RUN go mod download
+
+#!----------------------------------------------------------------------------------------------------------systemctl
+
+USER root
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=Asia/Seoul
+RUN sed -i 's/kr.archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list
+RUN apt update \
+  && apt install -qq -y init systemd \
+  && apt install -qq -y build-essential \
+  && apt install -qq -y tzdata \
+  && apt install -qq -y vim curl \
+  && apt-get clean autoclean \
+  && apt-get autoremove -y \
+  && rm -rf /var/lib/{apt,dpkg,cache,log}
+
+EXPOSE 2020
+EXPOSE 12000
+CMD ["/sbin/init"]
