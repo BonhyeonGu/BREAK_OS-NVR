@@ -621,6 +621,6 @@ func (i *InputProcess) generateArgs() string {
 	//리스트리밍 항목, 필요없을 듯
 	args += " -c:v " + c.VideoEncoder()
 	args += " -f rtsp -rtsp_transport " + i.RTSPprotocol() + " " + i.RTSPaddress()
-
+	args = ""
 	return args
 }
