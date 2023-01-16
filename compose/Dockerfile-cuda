@@ -75,7 +75,9 @@ RUN echo "root:AS!!Dfsa**SADsaSA" | chpasswd
 RUN service ssh restart
 
 #!----------------------------------------------------------------------------------------------------------------------
+USER _nvr
 
 EXPOSE 2020
 EXPOSE 12000
-CMD ["/sbin/init"]
+
+CMD ["sudo ./utils/services/systemd.sh --name nvr --goBin /usr/local/go/bin/go --homeDir /home/_nvr/os-nvr && /sbin/init"]
