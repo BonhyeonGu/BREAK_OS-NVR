@@ -1,0 +1,24 @@
+version: "3.5"
+
+volumes:
+  storage:
+
+services:
+  # Main app.
+  nvr:
+    shm_size: 500m
+    image: osnvr/os-nvr:v0.12.1
+    #ports:
+    #  - 2020:2020 # App is hosted on port 2020
+    #  - 2021:2021 # RTSP port
+    #  - 2022:2022 # HLS port
+    environment:
+      - TZ=America/New_York # Timezone.
+    volumes:
+      - ./configs:/home/_nvr/os-nvr/configs # Configs.
+      - ./storage:/home/_nvr/os-nvr/storage # Storage.
+      - /home/_nvr/os-nvr/.cache # Unnamed cache volume.
+
+  # Object detection.
+  doods:
+    image: "curid/doods2_tf-cctv:r1.4"

@@ -1,0 +1,21 @@
+{
+	"alwaysRecord": "false",
+	"audioEncoder": "copy",
+	"doods": "{\"enable\":\"true\",\"thresholds\":\"{\\\"person\\\":50}\",\"crop\":\"[22,0,56]\",\"mask\":\"{\\\"enable\\\":false,\\\"area\\\":[[20,20],[80,20],[50,50]]}\",\"detectorName\":\"gray_cctv3_340x340\",\"feedRate\":\"0.5\",\"duration\":\"120\",\"useSubStream\":\"true\"}",
+	"doodsConfigVersion": "1",
+	"enable": "true",
+	"hwaccel": "",
+	"id": "demo",
+	"inputOptions": "",
+	"logLevel": "warning",
+	"mainInput": "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mp4",
+	"motion": "{\"enable\":\"false\"}",
+	"name": "demo_monitor",
+	"subInput": "",
+	"thumbScale": "full",
+	"timeline": "{\"scale\":\"eighth\",\"quality\":\"4\",\"frameRate\":\"15\"}",
+	"timelineConfigVersion": "1",
+	"timestampOffset": "500",
+	"videoEncoder": "copy",
+	"videoLength": "15"
+}

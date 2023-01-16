@@ -1,0 +1,30 @@
+version: "3.5"
+
+volumes:
+  storage:
+
+services:
+  # Main app.
+  nvr:
+    shm_size: 500m
+    image: osnvr/os-nvr:v0.12.1
+    #ports:
+    #  - 2020:2020 # App is hosted on port 2020
+    #  - 2021:2021 # RTSP port
+    #  - 2022:2022 # HLS port
+    environment:
+      - TZ=America/New_York # Timezone.
+    volumes:
+      - ./configs:/home/_nvr/os-nvr/configs # Configs.
+      - ./storage:/home/_nvr/os-nvr/storage # Storage.
+      - /home/_nvr/os-nvr/.cache # Unnamed cache volume.
+
+  # Web server.
+  caddy:
+    image: caddy:2.6.2-alpine
+    ports:
+      - 80:80 # Only used to redirect to 433
+      - 443:443
+    volumes:
+      - /data
+      - ./configs/Caddyfile.conf:/etc/caddy/Caddyfile
