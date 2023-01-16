@@ -20,6 +20,14 @@ Dockerfile-cuda 속 image의 cuda 이미지 버전은 장치와 맞게 설정할
 docker-compose up -d
 ```
 
+해당 컨테이너 내에서
+
+```Bash
+systemctl restart nvr
+```
+
+로 서비스를 재시작할 수 있음
+
 ## 원본
 
 <img src="https://gitlab.com/osnvr/os-nvr-assets/-/raw/master/screenshots/readme.png">
