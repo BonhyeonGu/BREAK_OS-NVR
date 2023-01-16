@@ -1,24 +1,26 @@
-```
+```Bash
 git clone https://github.com/BonhyeonGu/OS-NVR
 cd ./OS-NVR
 cp ./compose-samples/default.yml ./docker-compose.yml
 cp ./configs/samples/* ./configs
 docker-compose up --abort-on-container-exit
 sudo nano ./configs/env.yaml
+```
+
+비밀번호를 입력해야할 수 있으며 #- nvr/addons/auth/none 의 #을 제거하고 저장할 것
+
+```Bash
 docker rm os-nvr-nvr-1
 cp compose/* ./
+```
+
+Dockerfile-cuda 속 image의 cuda 이미지 버전은 장치와 맞게 설정할 것
+
+```Bash
 docker-compose up -d
 ```
 
-  before:  
-      #- nvr/addons/auth/none  
-  after:  
-      - nvr/addons/auth/none
-
-```
-cp ./configs/samples/* ./configs
-
-```
+## 원본
 
 <img src="https://gitlab.com/osnvr/os-nvr-assets/-/raw/master/screenshots/readme.png">
 
