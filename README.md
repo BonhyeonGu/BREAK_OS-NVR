@@ -1,10 +1,13 @@
 ```
 git clone https://github.com/BonhyeonGu/OS-NVR
-cd ./os-nvr_docker
+cd ./OS-NVR
 cp ./compose-samples/default.yml ./docker-compose.yml
 cp ./configs/samples/* ./configs
 docker-compose up --abort-on-container-exit
 sudo nano ./configs/env.yaml
+docker rm os-nvr-nvr-1
+cp compose/* ./
+docker-compose up -d
 ```
 
   before:  
