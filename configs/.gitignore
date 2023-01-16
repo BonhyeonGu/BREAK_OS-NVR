@@ -1,7 +1,7 @@
-#!Caddyfile.conf
+Caddyfile.conf
 env.yaml
 users.json
 general.json
-#!doods.json
+doods.json
 monitors
 
