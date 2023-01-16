@@ -48,7 +48,7 @@ RUN sudo useradd -m -s /sbin/nologin _nvr
 WORKDIR /home/_nvr/
 RUN sudo -u _nvr git clone --branch master https://github.com/BonhyeonGu/OS-NVR.git
 
-WORKDIR /home/_nvr/os-nvr
+WORKDIR /home/_nvr/OS-NVR
 USER _nvr
 RUN go mod download
 
@@ -66,6 +66,25 @@ RUN apt update \
   && apt-get clean autoclean \
   && apt-get autoremove -y \
   && rm -rf /var/lib/{apt,dpkg,cache,log}
+
+#!----------------------------------------------------------------------------------------------------------nvr system
+
+RUN sudo ./utils/services/systemd.sh \
+	--name nvr \
+	--goBin /usr/bin/go \
+	--homeDir /home/_nvr/os-nvr
+
+RUN service nvr restart
+RUN curl 127.0.0.1:2020/live
+
+#!----------------------------------------------------------------------------------------------------------ssh(remote)
+
+RUN apt-get install -y openssh-server
+RUN echo "PermitRootLogin yes \nPasswordAuthentication yes \nChallengeResponseAuthentication no" >> /etc/ssh/sshd_config
+RUN echo "root:AS!!Dfsa**SADsaSA" | chpasswd
+RUN service ssh restart
+
+#!----------------------------------------------------------------------------------------------------------------------
 
 EXPOSE 2020
 EXPOSE 12000

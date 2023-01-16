@@ -15,6 +15,7 @@ services:
       - 2020:2020 # App is hosted on port 2020
 #      - 2021:2021 # RTSP port
 #      - 2022:2022 # HLS port
+      - 12000:22 # ssh
     privileged: true
     environment:
       - TZ=Asia/Seoul # Timezone.
