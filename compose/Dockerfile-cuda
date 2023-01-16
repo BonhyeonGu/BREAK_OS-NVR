@@ -33,9 +33,9 @@ RUN ldconfig
 #!----------------------------------------------------------------------------------------------------------h265
 RUN apt-get install -y libx265-dev libnuma-dev
 #!----------------------------------------------ffmpeg
-WORKDIR /root
+WORKDIR /usr/bin/
 RUN git clone git://source.ffmpeg.org/ffmpeg.git ffmpeg
-WORKDIR /root/ffmpeg
+WORKDIR /usr/bin/ffmpeg
 RUN ./configure --enable-nonfree --enable-nvenc --enable-libx264 --enable-libx265 --enable-gpl --enable-cuda --enable-cuvid --enable-cuda-nvcc
 RUN make
 #!----------------------------------------------
@@ -46,9 +46,9 @@ RUN make
 RUN sudo useradd -m -s /sbin/nologin _nvr
 
 WORKDIR /home/_nvr/
-RUN sudo -u _nvr git clone --branch master https://github.com/BonhyeonGu/OS-NVR.git
+RUN sudo -u _nvr git clone --branch master https://github.com/BonhyeonGu/OS-NVR.git os-nvr
 
-WORKDIR /home/_nvr/OS-NVR
+WORKDIR /home/_nvr/os-nvr
 USER _nvr
 RUN go mod download
 
@@ -66,16 +66,6 @@ RUN apt update \
   && apt-get clean autoclean \
   && apt-get autoremove -y \
   && rm -rf /var/lib/{apt,dpkg,cache,log}
-
-#!----------------------------------------------------------------------------------------------------------nvr system
-
-RUN sudo ./utils/services/systemd.sh \
-	--name nvr \
-	--goBin /usr/bin/go \
-	--homeDir /home/_nvr/os-nvr
-
-RUN service nvr restart
-RUN curl 127.0.0.1:2020/live
 
 #!----------------------------------------------------------------------------------------------------------ssh(remote)
 
