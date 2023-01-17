@@ -33,9 +33,11 @@ RUN ldconfig
 #!----------------------------------------------------------------------------------------------------------h265
 RUN apt-get install -y libx265-dev libnuma-dev
 #!----------------------------------------------ffmpeg
-WORKDIR /usr/bin/
+WORKDIR /root
 RUN git clone git://source.ffmpeg.org/ffmpeg.git ffmpeg
-RUN cp -rf ffmpeg/* ./
+RUN cp -rf ffmpeg/* /usr/bin
+
+WORKDIR /usr/bin
 RUN ./configure --enable-nonfree --enable-nvenc --enable-libx264 --enable-libx265 --enable-gpl --enable-cuda --enable-cuvid --enable-cuda-nvcc
 RUN make
 #!----------------------------------------------
