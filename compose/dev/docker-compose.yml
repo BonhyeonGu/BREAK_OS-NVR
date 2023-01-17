@@ -1,0 +1,44 @@
+version: "3"
+services:
+  dev_osnvr_mono:
+    tty: true
+    stdin_open: true
+    container_name: dev_osnvr_mono
+    build:
+      context: .
+      dockerfile: ../Dockerfile
+    ports:
+      - "8102:3001"
+      - "12005:22"
+    environment:
+        TZ: "Asia/Seoul"
+#    volumes:
+#      - ./app_Monologue2:/usr/src/app
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            count: all
+            capabilities: [gpu, utility, compute, video]
+  dev_osnvr_jo:
+    tty: true
+    stdin_open: true
+    container_name: dev_osnvr_jo
+    build:
+      context: .
+      dockerfile: ../Dockerfile
+    ports:
+      - "8103:3001"
+      - "12006:22"
+    environment:
+        TZ: "Asia/Seoul"
+#    volumes:
+#      - ./app_JOyagdol:/usr/src/app
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            count: all
+            capabilities: [gpu, utility, compute, video]
