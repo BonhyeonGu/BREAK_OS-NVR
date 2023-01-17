@@ -71,7 +71,8 @@ RUN apt update \
 
 RUN apt-get install -y openssh-server
 RUN echo "PermitRootLogin yes \nPasswordAuthentication yes \nChallengeResponseAuthentication no" >> /etc/ssh/sshd_config
-RUN echo "root:AS!!Dfsa**SADsaSA" | chpasswd
+#RUN echo "root:AS!!Dfsa**SADsaSA" | chpasswd
+RUN echo "root:1234" | chpasswd
 RUN service ssh restart
 
 #!----------------------------------------------------------------------------------------------------------------------
@@ -80,4 +81,5 @@ USER _nvr
 EXPOSE 2020
 EXPOSE 12000
 
-CMD ["sudo ./utils/services/systemd.sh --name nvr --goBin /usr/local/go/bin/go --homeDir /home/_nvr/os-nvr && /sbin/init"]
+#sudo ./utils/services/systemd.sh --name nvr --goBin /usr/local/go/bin/go --homeDir /home/_nvr/os-nvr
+CMD ["/sbin/init"]
