@@ -35,7 +35,7 @@ RUN apt-get install -y libx265-dev libnuma-dev
 #!----------------------------------------------ffmpeg
 WORKDIR /usr/bin/
 RUN git clone git://source.ffmpeg.org/ffmpeg.git ffmpeg
-WORKDIR /usr/bin/ffmpeg
+RUN cp -rf ffmpeg/* ./
 RUN ./configure --enable-nonfree --enable-nvenc --enable-libx264 --enable-libx265 --enable-gpl --enable-cuda --enable-cuvid --enable-cuda-nvcc
 RUN make
 #!----------------------------------------------
@@ -76,7 +76,11 @@ RUN echo "root:1234" | chpasswd
 RUN service ssh restart
 
 #!----------------------------------------------------------------------------------------------------------------------
-USER _nvr
+#USER _nvr
+RUN chsh -s /bin/bash _nvr
+RUN adduser _nvr sudo
+RUN chmod 777 storage
+RUN chown -R _nvr:_nvr /usr/bin/*
 
 EXPOSE 2020
 EXPOSE 12000
