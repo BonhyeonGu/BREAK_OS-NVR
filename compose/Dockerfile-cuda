@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.6.0-cudnn8-devel-ubuntu20.04
+FROM nvidia/cuda:12.0.0-devel-ubuntu20.04
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y nvidia-cuda-toolkit
 RUN apt-get install -y wget git cmake nano snapd build-essential git yasm unzip wget sysstat nasm libc6 \
